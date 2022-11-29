@@ -5,10 +5,9 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
-  //Ещё одна проверка на загрузку в гит
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,7 +30,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -50,14 +49,31 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  bool _showFab = true;
+  bool _showNotch = true;
+  FloatingActionButtonLocation _fabLocation =
+      FloatingActionButtonLocation.endDocked;
+
+  void _onShowNotchChanged(bool value) {
+    setState(() {
+      _showNotch = value;
+    });
+  }
+
+  void _onShowFabChanged(bool val) {
+    setState(() {
+      _showFab = val;
+    });
+  }
+
+  void _onFabLocationChanged(FloatingActionButtonLocation? loc) {
+    setState(() {
+      _fabLocation = loc ?? FloatingActionButtonLocation.endDocked;
+    });
+  }
 
   void _incrementCounter() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
       _counter++;
     });
   }
@@ -70,47 +86,114 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+    //Скаффолд - "контейнер", в котором находятся все виджеты этой страницы:
+    //appBar - верхняя панель, обычно с названием постов или приложения
+    //body - основное тело страницы
+    //BottomNavigationBar - нижняя панель приложения
+    //
     return Scaffold(
+      floatingActionButtonLocation: _fabLocation,
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text("${widget.title} - $_counter"),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+      body: ListView(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical: 5,
         ),
+        children: [
+          SwitchListTile // переключатель, при нажатии на который выполняется NotchChanged
+              (
+            onChanged: _onShowNotchChanged,
+            value: _showNotch,
+            title: const Text("Notch"),
+          ),
+          SwitchListTile // переключатель, при нажатии на который выполняется FabChanged - есть обводка у кнопки, или нет
+              (
+            onChanged: _onShowFabChanged,
+            value: _showFab,
+            title: const Text("Fab"),
+          ),
+          const Divider(),
+          const Padding(
+            padding: EdgeInsets.all(10),
+            child: Text("Fab locations"),
+          ),
+          RadioListTile(
+              title: const Text("centerDocked"),
+              value: FloatingActionButtonLocation.centerDocked,
+              groupValue: _fabLocation,
+              onChanged: _onFabLocationChanged),
+          RadioListTile(
+              title: const Text("centerFloat"),
+              value: FloatingActionButtonLocation.centerFloat,
+              groupValue: _fabLocation,
+              onChanged: _onFabLocationChanged),
+          RadioListTile(
+              title: const Text("endDocked"),
+              value: FloatingActionButtonLocation.endDocked,
+              groupValue: _fabLocation,
+              onChanged: _onFabLocationChanged),
+          RadioListTile(
+              title: const Text("endFloat"),
+              value: FloatingActionButtonLocation.endFloat,
+              groupValue: _fabLocation,
+              onChanged: _onFabLocationChanged),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton: !_showFab
+          ? null
+          : Wrap(
+              children: [
+                FloatingActionButton(
+                  onPressed: _incrementCounter,
+                  tooltip: 'Increment',
+                  child: const Icon(Icons.access_alarm),
+                ),
+              ],
+            ),
+      bottomNavigationBar: _BottomAppBarTest(
+        fabLocation: _fabLocation,
+        shape: _showNotch ? const CircularNotchedRectangle() : null,
+      ),
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+}
+
+class _BottomAppBarTest extends StatelessWidget {
+  _BottomAppBarTest({
+    required this.fabLocation,
+    this.shape,
+  });
+  final FloatingActionButtonLocation fabLocation;
+
+  final CircularNotchedRectangle? shape;
+
+  final List<FloatingActionButtonLocation> centerVariants = [
+    FloatingActionButtonLocation.centerDocked,
+    FloatingActionButtonLocation.centerFloat,
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return BottomAppBar(
+        shape: shape,
+        color: Colors.blue,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {},
+            ),
+            if (centerVariants.contains(fabLocation)) const Spacer(),
+            IconButton(
+              icon: const Icon(Icons.favorite),
+              onPressed: () {},
+            )
+          ],
+        ));
   }
 }
