@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_study/data/auth_service.dart';
+import 'package:flutter_study/data/services/auth_service.dart';
 import '../app_navigator.dart';
 
 class Home extends StatefulWidget {

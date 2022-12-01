@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_study/data/auth_service.dart';
+import 'package:flutter_study/data/services/auth_service.dart';
 import 'package:flutter_study/ui/app_navigator.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +25,7 @@ class LoaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(child: CircularProgressIndicator()),
     );
   }
