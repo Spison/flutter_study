@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_study/data/clients/api_client.dart';
 import 'package:provider/provider.dart';
 import '../../domain/models/user.dart';
 import '../../internal/config/app_config.dart';
@@ -36,7 +37,7 @@ class Profile extends StatelessWidget {
                 ),
                 Column(
                     textDirection: TextDirection.ltr,
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
                         "email: ${viewModel.user!.email}",
@@ -48,11 +49,11 @@ class Profile extends StatelessWidget {
                         textAlign: TextAlign.left,
                         style: const TextStyle(fontSize: 20),
                       ),
-                      Text(
-                        "Подписчики:/api/User/GetSubscribersId",
-                        textAlign: TextAlign.left,
-                        style: const TextStyle(fontSize: 10),
-                      ),
+                      // Text(
+                      //   "добавить в будущем подписчиков",
+                      //   textAlign: TextAlign.left,
+                      //   style: const TextStyle(fontSize: 20),
+                      // ),
                     ]),
               ])
             : null,
