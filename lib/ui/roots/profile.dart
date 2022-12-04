@@ -1,48 +1,92 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../domain/models/user.dart';
 import '../../internal/config/app_config.dart';
+import '../../internal/config/shared_prefs.dart';
+import '../../internal/config/token_storage.dart';
+import '../app_navigator.dart';
 
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    //var viewModel = context.watch<_ViewModel>();//Над уточнить, что это
+    var viewModel = context.watch<_ViewModel>(); //Над уточнить, что это
     return Scaffold(
       appBar: AppBar(
-        //title: Text(viewModel.user!.name), //заменить на ник/логин
-        title: const Text("login"),
+        title: (viewModel.user != null && viewModel.headers != null
+            ? Text(viewModel.user!.name)
+            : const Text("login")),
       ),
-      body: Row(children: [
-        Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Image.network(
-                //"$baseUrl${viewModel.user!.avatarLink}",
-                "https://sun9-57.userapi.com/impg/gN3RucJP71dWDcRIkHzRuSa-OTdr8ZKPep1mdQ/q9V2TZ0xidQ.jpg?size=957x1280&quality=96&sign=930b48baf86f9313ee6684e434cbb49d&type=album",
-              ),
-            ),
-            ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              children: const [
-                //Text(viewModel.user!.name),
-                //Text(viewModel.user!.email),
-                //Text(viewModel.user!.birthdate),
-                Text("name"),
-                Text("viewModel.user!.email"),
-                Text("viewModel.user!.birthdate"),
-                //Text(viewModel.user!.postscount),
-              ],
-            )
-          ],
-        ),
-      ]),
+      body: SafeArea(
+          child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: (viewModel.user != null && viewModel.headers != null)
+            ? Row(children: [
+                //Text("hey,dude"),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Image.network(
+                    //avatar,
+                    (viewModel.user!.avatarLink == null
+                        ? "https://it-events.com/system/ckeditor/pictures/9440/content_dd_logo_rus.jpg"
+                        : "$baseUrl${viewModel.user!.avatarLink}"),
+                    width: 150,
+                  ),
+                ),
+                Column(
+                    textDirection: TextDirection.ltr,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "email: ${viewModel.user!.email}",
+                        textAlign: TextAlign.left,
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      Text(
+                        "Birthday: ${viewModel.user!.birthDate.substring(0, 10)}",
+                        textAlign: TextAlign.left,
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      Text(
+                        "Подписчики:/api/User/GetSubscribersId",
+                        textAlign: TextAlign.left,
+                        style: const TextStyle(fontSize: 10),
+                      ),
+                    ]),
+              ])
+            : null,
+      )),
     );
   }
-  /* static create() {
+
+  static create() {
     return ChangeNotifierProvider(
       create: (BuildContext context) => _ViewModel(context: context),
       child: const Profile(),
     );
-  } */
+  }
+}
+
+class _ViewModel extends ChangeNotifier {
+  BuildContext context;
+  _ViewModel({required this.context}) {
+    asyncInit();
+  }
+
+  User? _user;
+  User? get user => _user;
+
+  set user(User? val) {
+    _user = val;
+    notifyListeners();
+  }
+
+  Map<String, String>? headers;
+
+  void asyncInit() async {
+    var token = await TokenStorage.getAccessToken();
+    headers = {"Authorization": "Bearer $token"};
+    user = await SharedPrefs.getStoredUser();
+  }
 }

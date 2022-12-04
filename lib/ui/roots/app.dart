@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study/data/services/auth_service.dart';
+import 'package:flutter_study/ui/roots/profile.dart';
 import 'package:provider/provider.dart';
 import '../../domain/models/user.dart';
 import '../../internal/config/app_config.dart';
@@ -40,6 +41,10 @@ class _ViewModel extends ChangeNotifier {
   void _refresh() async {
     await _authService.tryGetUser();
   }
+
+  void _toProfile() async {
+    await AppNavigator.toLoader();
+  }
 }
 
 class App extends StatelessWidget {
@@ -67,7 +72,14 @@ class App extends StatelessWidget {
         ],
       ),
       body: Container(
-        child: Column(children: []),
+        child: Column(children: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/profile');
+            },
+            child: const Text("profile"),
+          )
+        ]),
       ),
     );
   }

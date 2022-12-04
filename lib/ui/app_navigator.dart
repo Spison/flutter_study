@@ -29,6 +29,10 @@ class AppNavigator {
         ?.pushNamedAndRemoveUntil(NavigationRoutes.app, ((route) => false));
   }
 
+  static void toProfile() {
+    key.currentState?.pushNamed(NavigationRoutes.app);
+  }
+
   static Route<dynamic>? onGeneratedRoutes(RouteSettings settings, context) {
     switch (settings.name) {
       case NavigationRoutes.loaderWidget:
@@ -38,8 +42,9 @@ class AppNavigator {
         return PageRouteBuilder(pageBuilder: ((_, __, ___) => Auth.create()));
       case NavigationRoutes.app:
         return PageRouteBuilder(pageBuilder: ((_, __, ___) => App.create()));
-      // case NavigationRoutes.profile:
-      //   return PageRouteBuilder(pageBuilder: ((_, __, ___) => Profile.create()));
+      case NavigationRoutes.profile:
+        return PageRouteBuilder(
+            pageBuilder: ((_, __, ___) => Profile.create()));
     }
     return null;
   }

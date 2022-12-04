@@ -26,6 +26,8 @@ class AuthService {
           throw WrongCredentionalException();
         } else if (<int>[500].contains(e.response?.statusCode)) {
           throw ServerException();
+        } else if (<int>[404].contains(e.response?.statusCode)) {
+          throw LogoutException();
         }
       }
     }
@@ -55,3 +57,5 @@ class WrongCredentionalException implements Exception {}
 class NoNetworkException implements Exception {}
 
 class ServerException implements Exception {}
+
+class LogoutException implements Exception {}
