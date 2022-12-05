@@ -43,7 +43,7 @@ class _ViewModel extends ChangeNotifier {
   }
 
   void _toProfile() async {
-    await AppNavigator.toLoader();
+    AppNavigator.toProfile();
   }
 }
 
@@ -71,16 +71,15 @@ class App extends StatelessWidget {
               onPressed: viewModel._logout),
         ],
       ),
-      body: Container(
-        child: Column(children: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/profile');
-            },
-            child: const Text("profile"),
-          )
-        ]),
-      ),
+      body: Column(children: [
+        ElevatedButton(
+          onPressed: () {
+            viewModel._toProfile();
+            //Navigator.pushNamed(context, '/profile');
+          },
+          child: const Text("profile"),
+        )
+      ]),
     );
   }
 

@@ -11,4 +11,6 @@ abstract class ApiClient {
 
   @GET("/api/User/GetCurrentUser")
   Future<User?> getUser();
+  @GET("/api/User/GetCurrentUser")
+  Future<UserFull?> getUserFull();
 }

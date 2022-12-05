@@ -12,7 +12,7 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var viewModel = context.watch<_ViewModel>(); //Над уточнить, что это
+    var viewModel = context.watch<_ViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: (viewModel.user != null && viewModel.headers != null
@@ -24,7 +24,6 @@ class Profile extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         child: (viewModel.user != null && viewModel.headers != null)
             ? Row(children: [
-                //Text("hey,dude"),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Image.network(
@@ -49,11 +48,11 @@ class Profile extends StatelessWidget {
                         textAlign: TextAlign.left,
                         style: const TextStyle(fontSize: 20),
                       ),
-                      // Text(
-                      //   "добавить в будущем подписчиков",
-                      //   textAlign: TextAlign.left,
-                      //   style: const TextStyle(fontSize: 20),
-                      // ),
+                      Text(
+                        "Публикаций: ${(viewModel.user!.postsCount ?? "0")}",
+                        textAlign: TextAlign.left,
+                        style: const TextStyle(fontSize: 20),
+                      ),
                     ]),
               ])
             : null,
@@ -75,10 +74,10 @@ class _ViewModel extends ChangeNotifier {
     asyncInit();
   }
 
-  User? _user;
-  User? get user => _user;
+  UserFull? _user;
+  UserFull? get user => _user;
 
-  set user(User? val) {
+  set user(UserFull? val) {
     _user = val;
     notifyListeners();
   }
@@ -88,6 +87,6 @@ class _ViewModel extends ChangeNotifier {
   void asyncInit() async {
     var token = await TokenStorage.getAccessToken();
     headers = {"Authorization": "Bearer $token"};
-    user = await SharedPrefs.getStoredUser();
+    user = await SharedPrefs.getStoredUserFull();
   }
 }

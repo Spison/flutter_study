@@ -30,4 +30,6 @@ class ApiDataRepository extends ApiRepository {
       ));
   @override
   Future<User?> getUser() => _api.getUser();
+  @override
+  Future<UserFull?> getUserFull() => _api.getUserFull();
 }

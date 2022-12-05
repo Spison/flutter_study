@@ -20,3 +20,24 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }
+
+@JsonSerializable()
+class UserFull {
+  final String id;
+  final String name;
+  final String email;
+  final String birthDate;
+  final String? avatarLink;
+  final String? postsCount;
+  UserFull({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.birthDate,
+    required this.avatarLink,
+    required this.postsCount,
+  });
+  factory UserFull.fromJson(Map<String, dynamic> json) =>
+      _$UserFullFromJson(json);
+  Map<String, dynamic> toJson() => _$UserFullToJson(this);
+}

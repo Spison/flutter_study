@@ -30,7 +30,7 @@ class AppNavigator {
   }
 
   static void toProfile() {
-    key.currentState?.pushNamed(NavigationRoutes.app);
+    key.currentState?.pushNamed(NavigationRoutes.profile);
   }
 
   static Route<dynamic>? onGeneratedRoutes(RouteSettings settings, context) {
