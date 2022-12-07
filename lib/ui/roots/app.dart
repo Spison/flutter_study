@@ -55,13 +55,13 @@ class App extends StatelessWidget {
     var viewModel = context.watch<_ViewModel>();
     return Scaffold(
       appBar: AppBar(
-        leading: (viewModel.user != null && viewModel.headers != null)
-            ? CircleAvatar(
-                backgroundImage: NetworkImage(
-                    "$baseUrl${viewModel.user!.avatarLink}",
-                    headers: viewModel.headers),
-              )
-            : null,
+        // leading: (viewModel.user != null && viewModel.headers != null)
+        //     ? CircleAvatar(
+        //         backgroundImage: NetworkImage(
+        //             "$baseUrl${viewModel.user!.avatarLink}",
+        //             headers: viewModel.headers),
+        //       )
+        //     : null,
         title: Text(viewModel.user == null ? "Hi" : viewModel.user!.name),
         actions: [
           IconButton(
@@ -71,6 +71,25 @@ class App extends StatelessWidget {
               onPressed: viewModel._logout),
         ],
       ),
+      drawer: Drawer(
+          child: ListView(
+        children: [
+          UserAccountsDrawerHeader(
+            accountName:
+                Text(viewModel.user == null ? "Hi" : viewModel.user!.name),
+            accountEmail:
+                Text(viewModel.user == null ? "Hi" : viewModel.user!.email),
+            currentAccountPicture:
+                (viewModel.user != null && viewModel.headers != null)
+                    ? CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            "$baseUrl${viewModel.user!.avatarLink}",
+                            headers: viewModel.headers),
+                      )
+                    : null,
+          )
+        ],
+      )),
       body: Column(children: [
         ElevatedButton(
           onPressed: () {

@@ -78,6 +78,20 @@ class _ViewModel extends ChangeNotifier {
 class Auth extends StatelessWidget {
   const Auth({Key? key}) : super(key: key);
 
+  _submittedPassField(String text) {
+    if (text == "") {
+      const SnackBar(
+        content: Text("Password can't be empty"),
+      );
+    }
+  }
+
+  _submittedLoginField(String text) {
+    if (text == "") {
+      return const SnackBar(content: Text("Login can't be empty"));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var viewModel = context.watch<_ViewModel>();
@@ -92,13 +106,20 @@ class Auth extends StatelessWidget {
               children: [
                 TextField(
                   controller: viewModel.loginTec,
-                  decoration: const InputDecoration(hintText: "Enter Login"),
+                  decoration: const InputDecoration(
+                      hintText: "Enter Login",
+                      helperText: "The Login is user to log in"),
+                  onSubmitted: _submittedLoginField,
                 ),
                 TextField(
-                    controller: viewModel.passwTec,
-                    obscureText: true,
-                    decoration:
-                        const InputDecoration(hintText: "Enter Password")),
+                  controller: viewModel.passwTec,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                      hintText: "Enter Password",
+                      helperText:
+                          "The Password is used to protect the account"),
+                  onSubmitted: _submittedPassField,
+                ),
                 ElevatedButton(
                     onPressed: viewModel.checkFields() ? viewModel.login : null,
                     child: const Text("Login")),
