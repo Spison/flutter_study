@@ -87,6 +87,15 @@ class App extends StatelessWidget {
                             headers: viewModel.headers),
                       )
                     : null,
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.blue, onPrimary: Colors.white),
+              onPressed: () {},
+              child: const Text("settings"),
+            ),
           )
         ],
       )),
