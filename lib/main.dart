@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_study/ui/app_navigator.dart';
 import 'package:flutter_study/ui/roots/loader.dart';
 
-void main() {
+import 'data/services/database.dart';
+
+void main() async {
+  await DB.instance.initDB();
   runApp(const MyApp());
 }
 
