@@ -48,11 +48,11 @@ class Profile extends StatelessWidget {
                         textAlign: TextAlign.left,
                         style: const TextStyle(fontSize: 20),
                       ),
-                      Text(
-                        "Публикаций: ${(viewModel.user!.postsCount ?? "0")}",
-                        textAlign: TextAlign.left,
-                        style: const TextStyle(fontSize: 20),
-                      ),
+                      // Text(
+                      //   "Публикаций: ${(viewModel.user!.postsCount ?? "0")}",
+                      //   textAlign: TextAlign.left,
+                      //   style: const TextStyle(fontSize: 20),
+                      // ),
                     ]),
               ])
             : null,
@@ -74,10 +74,10 @@ class _ViewModel extends ChangeNotifier {
     asyncInit();
   }
 
-  UserFull? _user;
-  UserFull? get user => _user;
+  User? _user;
+  User? get user => _user;
 
-  set user(UserFull? val) {
+  set user(User? val) {
     _user = val;
     notifyListeners();
   }
@@ -85,8 +85,6 @@ class _ViewModel extends ChangeNotifier {
   Map<String, String>? headers;
 
   void asyncInit() async {
-    var token = await TokenStorage.getAccessToken();
-    headers = {"Authorization": "Bearer $token"};
-    user = await SharedPrefs.getStoredUserFull();
+    user = await SharedPrefs.getStoredUser();
   }
 }

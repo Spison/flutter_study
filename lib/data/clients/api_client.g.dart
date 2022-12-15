@@ -42,26 +42,33 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<UserFull?> getUserFull() async {
+  Future<List<PostModel>> getPosts(
+    skip,
+    take,
+  ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'skip': skip,
+      r'take': take,
+    };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio
-        .fetch<Map<String, dynamic>?>(_setStreamType<UserFull>(Options(
+    final _result =
+        await _dio.fetch<List<dynamic>>(_setStreamType<List<PostModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/api/User/GetCurrentUser',
+              '/api/Post/GetPosts',
               queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value =
-        _result.data == null ? null : UserFull.fromJson(_result.data!);
+    var value = _result.data!
+        .map((dynamic i) => PostModel.fromJson(i as Map<String, dynamic>))
+        .toList();
     return value;
   }
 

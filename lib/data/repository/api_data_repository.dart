@@ -5,6 +5,7 @@ import 'package:flutter_study/domain/models/user.dart';
 import 'package:flutter_study/domain/repository/api_repository.dart';
 import 'package:flutter_study/domain/models/token_request.dart';
 
+import '../../domain/models/post_model.dart';
 import '../../domain/models/refresh_token_request.dart';
 
 class ApiDataRepository extends ApiRepository {
@@ -31,5 +32,6 @@ class ApiDataRepository extends ApiRepository {
   @override
   Future<User?> getUser() => _api.getUser();
   @override
-  Future<UserFull?> getUserFull() => _api.getUserFull();
+  Future<List<PostModel>> getPosts(int skip, int take) =>
+      _api.getPosts(skip, take);
 }
