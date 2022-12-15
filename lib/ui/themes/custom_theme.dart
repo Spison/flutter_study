@@ -9,7 +9,9 @@ class CustomTheme {
         //2
         primaryColor: Colors.purple,
         scaffoldBackgroundColor: Colors.amber.shade100,
+        canvasColor: Colors.amber.shade300,
         fontFamily: 'Montserrat', //3
+        textTheme: ThemeData.light().textTheme,
         buttonTheme: ButtonThemeData(
           // 4
           shape:
@@ -22,9 +24,11 @@ class CustomTheme {
   static ThemeData get darkTheme {
     return ThemeData(
         primaryColor: Colors.grey.shade800,
+        canvasColor: Colors.grey.shade800,
         scaffoldBackgroundColor: Colors.black,
         fontFamily: 'Montserrat',
         textTheme: ThemeData.dark().textTheme,
+        drawerTheme: ThemeData.dark().drawerTheme,
         buttonTheme: ButtonThemeData(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),

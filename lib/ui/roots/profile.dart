@@ -15,14 +15,14 @@ class Profile extends StatelessWidget {
     var viewModel = context.watch<_ViewModel>();
     return Scaffold(
       appBar: AppBar(
-        title: (viewModel.user != null && viewModel.headers != null
+        title: (viewModel.user != null
             ? Text(viewModel.user!.name)
             : const Text("login")),
       ),
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.all(10),
-        child: (viewModel.user != null && viewModel.headers != null)
+        child: (viewModel.user != null)
             ? Row(children: [
                 Align(
                   alignment: Alignment.topLeft,

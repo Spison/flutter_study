@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: AppNavigator.key,
       onGenerateRoute: (settings) =>
           AppNavigator.onGeneratedRoutes(settings, context),
-      theme: CustomTheme.lightTheme,
+      theme: CustomTheme.darkTheme,
       home: LoaderWidget.create(),
       //home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
