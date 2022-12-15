@@ -19,11 +19,14 @@ class User implements DbModel {
     required this.birthDate,
     required this.avatarLink,
   });
+
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
   Map<String, dynamic> toJson() => _$UserToJson(this);
+
+  factory User.fromMap(Map<String, dynamic> map) => _$UserFromJson(map);
   @override
   Map<String, dynamic> toMap() => _$UserToJson(this);
-  factory User.fromMap(Map<String, dynamic> map) => _$UserFromJson(map);
 }
 
 @JsonSerializable()

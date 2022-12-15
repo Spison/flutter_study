@@ -13,17 +13,18 @@ class DB {
   static final DB instance = DB._();
   static late Database _db;
   static bool _initialized = false;
-  Future initDB() async {
+
+  Future init() async {
     if (!_initialized) {
       var databasePath = await getDatabasesPath();
-      var path = join(databasePath, "db_v1.0.0.db");
+      var path = join(databasePath, "db_v1.0.2.db");
 
-      _db = await openDatabase(path, version: 1, onCreate: createDB);
+      _db = await openDatabase(path, version: 1, onCreate: _createDB);
       _initialized = true;
     }
   }
 
-  Future createDB(Database db, int version) async {
+  Future _createDB(Database db, int version) async {
     var dbInitScript = await rootBundle.loadString('assets/db_init.sql');
     dbInitScript.split(';').forEach((element) async {
       if (element.isNotEmpty) {
@@ -37,6 +38,7 @@ class DB {
     Post: (map) => Post.fromMap(map),
     PostContent: (map) => PostContent.fromMap(map),
   };
+
   String _dbName(Type type) {
     if (type == DbModel) {
       throw Exception("Type is REQUIRED");
@@ -80,7 +82,7 @@ class DB {
   }
 
   Future<int> insert<T extends DbModel>(T model) async {
-    if (model.id == "" || model.id == 0) {
+    if (model.id == "") {
       var modelmap = model.toMap();
       modelmap["id"] = const Uuid().v4();
       model = _factories[T]!(modelmap);

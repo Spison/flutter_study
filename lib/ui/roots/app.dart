@@ -38,10 +38,6 @@ class _ViewModel extends ChangeNotifier {
     await _authService.logout().then((value) => AppNavigator.toLoader());
   }
 
-  void _refresh() async {
-    await _authService.tryGetUser();
-  }
-
   void _toProfile() async {
     AppNavigator.toProfile();
   }
@@ -64,8 +60,6 @@ class App extends StatelessWidget {
         //     : null,
         title: Text(viewModel.user == null ? "Hi" : viewModel.user!.name),
         actions: [
-          IconButton(
-              icon: const Icon(Icons.refresh), onPressed: viewModel._refresh),
           IconButton(
               icon: const Icon(Icons.exit_to_app),
               onPressed: viewModel._logout),
@@ -91,8 +85,8 @@ class App extends StatelessWidget {
           Align(
             alignment: Alignment.topLeft,
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  primary: Colors.blue, onPrimary: Colors.white),
+              // style: ElevatedButton.styleFrom(
+              //     primary: Colors.blue, onPrimary: Colors.white),
               onPressed: () {},
               child: const Text("settings"),
             ),

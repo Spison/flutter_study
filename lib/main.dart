@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study/ui/app_navigator.dart';
 import 'package:flutter_study/ui/roots/loader.dart';
+import 'package:flutter_study/ui/themes/custom_theme.dart';
 
 import 'data/services/database.dart';
 
 void main() async {
-  await DB.instance.initDB();
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await DB.instance.init();
   runApp(const MyApp());
 }
 
@@ -19,9 +22,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: AppNavigator.key,
       onGenerateRoute: (settings) =>
           AppNavigator.onGeneratedRoutes(settings, context),
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: CustomTheme.lightTheme,
       home: LoaderWidget.create(),
       //home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );

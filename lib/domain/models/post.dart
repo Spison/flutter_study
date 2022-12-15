@@ -16,10 +16,10 @@ class Post implements DbModel {
   });
 
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
+
   Map<String, dynamic> toJson() => _$PostToJson(this);
 
-  factory Post.fromMap(Map<String, dynamic> json) => _$PostFromJson(json);
-
+  factory Post.fromMap(Map<String, dynamic> map) => _$PostFromJson(map);
   @override
   Map<String, dynamic> toMap() => _$PostToJson(this);
 }

@@ -21,11 +21,11 @@ class PostContent implements DbModel {
 
   factory PostContent.fromJson(Map<String, dynamic> json) =>
       _$PostContentFromJson(json);
+
   Map<String, dynamic> toJson() => _$PostContentToJson(this);
 
-  factory PostContent.fromMap(Map<String, dynamic> json) =>
-      _$PostContentFromJson(json);
-
+  factory PostContent.fromMap(Map<String, dynamic> map) =>
+      _$PostContentFromJson(map);
   @override
   Map<String, dynamic> toMap() => _$PostContentToJson(this);
 }

@@ -10,6 +10,7 @@ import 'package:flutter_study/internal/dependencies/repository_module.dart';
 class AuthService {
   final ApiRepository _api = RepositoryModule.apiRepository();
   final DataService _dataService = DataService();
+
   Future auth(String? login, String? password) async {
     if (login != null && password != null) {
       try {
@@ -28,19 +29,8 @@ class AuthService {
           throw WrongCredentionalException();
         } else if (<int>[500].contains(e.response?.statusCode)) {
           throw ServerException();
-        } else if (<int>[404].contains(e.response?.statusCode)) {
-          throw LogoutException();
         }
       }
-    }
-  }
-
-  Future<bool> tryGetUser() async {
-    try {
-      var user = await _api.getUser();
-      return true;
-    } catch (e) {
-      return false;
     }
   }
 
@@ -56,6 +46,7 @@ class AuthService {
 
       res = true;
     }
+
     return res;
   }
 
@@ -69,5 +60,3 @@ class WrongCredentionalException implements Exception {}
 class NoNetworkException implements Exception {}
 
 class ServerException implements Exception {}
-
-class LogoutException implements Exception {}
