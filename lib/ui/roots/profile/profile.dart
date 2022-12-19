@@ -33,7 +33,7 @@ class Profile extends StatelessWidget {
                       alignment: Alignment.topLeft,
                       child: Image.network(
                         //avatar,
-                        (viewModel.avatar == null
+                        (viewModel.user!.avatarLink == null
                             ? "https://it-events.com/system/ckeditor/pictures/9440/content_dd_logo_rus.jpg"
                             : "$baseUrl${viewModel.user!.avatarLink}"),
                         width: 150,
@@ -66,9 +66,11 @@ class Profile extends StatelessWidget {
     );
   }
 
-  static create(context) {
+  static create(BuildContext bc) {
     return ChangeNotifierProvider(
-      create: (BuildContext context) => ProfileViewModel(context: context),
+      create: (context) {
+        return ProfileViewModel(context: bc);
+      },
       child: const Profile(),
     );
   }

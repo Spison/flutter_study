@@ -89,8 +89,7 @@ class AppViewModel extends ChangeNotifier {
         duration: const Duration(seconds: 1), curve: Curves.easeInCubic);
   }
 
-  void _toProfile(BuildContext bc) async {
-    // AppNavigator.toProfile(bc);
+  void toProfile(BuildContext bc) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (__) => Profile.create(bc)));
   }
@@ -144,7 +143,7 @@ class App extends StatelessWidget {
                 // style: ElevatedButton.styleFrom(
                 //     primary: Colors.blue, onPrimary: Colors.white),
                 onPressed: () {
-                  viewModel._toProfile(context);
+                  viewModel.toProfile(context);
                 },
                 child: const Text("Profile"),
               ),
