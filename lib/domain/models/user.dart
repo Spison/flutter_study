@@ -27,6 +27,7 @@ class User implements DbModel {
   factory User.fromMap(Map<String, dynamic> map) => _$UserFromJson(map);
   @override
   Map<String, dynamic> toMap() => _$UserToJson(this);
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;

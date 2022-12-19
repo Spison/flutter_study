@@ -32,11 +32,14 @@ class ApiDataRepository extends ApiRepository {
       await _auth.refreshToken(RefreshTokenRequest(
         refreshToken: refreshToken,
       ));
+
   @override
   Future<User?> getUser() => _api.getUser();
+
   @override
   Future<List<PostModel>> getPosts(int skip, int take) =>
       _api.getPosts(skip, take);
+
   @override
   Future<List<AttachMeta>> uploadTemp({required List<File> files}) =>
       _api.uploadTemp(files: files);

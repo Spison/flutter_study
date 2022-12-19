@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_study/data/services/auth_service.dart';
 import 'package:flutter_study/data/services/data_service.dart';
 import 'package:provider/provider.dart';
+import '../../data/services/sync_service.dart';
 import '../../domain/models/post_model.dart';
 import '../../domain/models/user.dart';
 import '../../internal/config/app_config.dart';
@@ -63,6 +64,7 @@ class AppViewModel extends ChangeNotifier {
   }
 
   Map<int, int> pager = <int, int>{};
+
   void onPageChanged(int listIndex, int pageIndex) {
     pager[listIndex] = pageIndex;
     notifyListeners();
@@ -76,6 +78,8 @@ class AppViewModel extends ChangeNotifier {
       img.buffer.asUint8List(),
       fit: BoxFit.fill,
     );
+
+    await SyncService().syncPosts();
     posts = await _dataService.getPosts();
   }
 
@@ -83,8 +87,9 @@ class AppViewModel extends ChangeNotifier {
     await _authService.logout().then((value) => AppNavigator.toLoader());
   }
 
-  void onClick() {
+  void obclick() {
     //var offset = _lvc.offset;
+
     _lvc.animateTo(0,
         duration: const Duration(seconds: 1), curve: Curves.easeInCubic);
   }
@@ -101,27 +106,13 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var viewModel = context.watch<AppViewModel>();
-    var screenWidth = MediaQuery.of(context).size.width;
+    var size = MediaQuery.of(context).size;
     var itemCount = viewModel.posts?.length ?? 0;
+
     return Scaffold(
         floatingActionButton: FloatingActionButton(
-          onPressed: viewModel.onClick,
+          onPressed: viewModel.obclick,
           child: const Icon(Icons.arrow_circle_up_outlined),
-        ),
-        appBar: AppBar(
-          // leading: (viewModel.user != null && viewModel.headers != null)
-          //     ? CircleAvatar(
-          //         backgroundImage: NetworkImage(
-          //             "$baseUrl${viewModel.user!.avatarLink}",
-          //             headers: viewModel.headers),
-          //       )
-          //     : null,
-          title: Text(viewModel.user == null ? "Hi" : viewModel.user!.name),
-          actions: [
-            IconButton(
-                icon: const Icon(Icons.exit_to_app),
-                onPressed: viewModel._logout),
-          ],
         ),
         drawer: Drawer(
             child: ListView(
@@ -150,6 +141,17 @@ class App extends StatelessWidget {
             )
           ],
         )),
+        appBar: AppBar(
+          title: GestureDetector(
+              onTap: () => viewModel.toProfile(context),
+              child:
+                  Text(viewModel.user == null ? "Hi" : viewModel.user!.name)),
+          actions: [
+            IconButton(
+                icon: const Icon(Icons.exit_to_app),
+                onPressed: viewModel._logout),
+          ],
+        ),
         body: Container(
             child: viewModel.posts == null
                 ? const Center(child: CircularProgressIndicator())
@@ -164,9 +166,14 @@ class App extends StatelessWidget {
                           if (posts != null) {
                             var post = posts[listIndex];
                             res = Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.black,
+                                    width: 2), //подобрать цвет более подходящий
+                                borderRadius: BorderRadius.circular(30),
+                              ),
                               padding: const EdgeInsets.all(10),
-                              height: screenWidth,
-                              color: Colors.grey,
+                              height: size.width,
                               child: Column(
                                 children: [
                                   Expanded(
@@ -176,7 +183,6 @@ class App extends StatelessWidget {
                                       itemCount: post.contents.length,
                                       itemBuilder: (pageContext, pageIndex) =>
                                           Container(
-                                        color: Colors.yellow,
                                         child: Image(
                                             image: NetworkImage(
                                           "$baseUrl${post.contents[pageIndex].contentLink}",

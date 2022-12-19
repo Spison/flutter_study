@@ -11,7 +11,6 @@ abstract class ApiRepository {
   Future<TokenResponse?> refreshToken(String refreshToken);
   Future<User?> getUser();
   Future<List<PostModel>> getPosts(int skip, int take);
-
   Future<List<AttachMeta>> uploadTemp({required List<File> files});
   Future addAvatarToUser(AttachMeta model);
 }

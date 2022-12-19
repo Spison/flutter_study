@@ -28,6 +28,7 @@ class PostContent implements DbModel {
       _$PostContentFromJson(map);
   @override
   Map<String, dynamic> toMap() => _$PostContentToJson(this);
+
   PostContent copyWith({
     String? id,
     String? name,

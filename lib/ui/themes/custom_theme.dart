@@ -5,10 +5,10 @@ class CustomTheme {
     //1
     return ThemeData(
         //2
-        primaryColor: Colors.amber,
+        primaryColor: Colors.amber.shade300,
         primarySwatch: Colors.amber,
         scaffoldBackgroundColor: Colors.amber.shade100,
-        canvasColor: Colors.amber.shade300,
+        canvasColor: Colors.amber.shade200,
         fontFamily: 'Montserrat', //3
         textTheme: const TextTheme(
           headline1: TextStyle(

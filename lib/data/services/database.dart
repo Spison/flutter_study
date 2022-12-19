@@ -17,7 +17,7 @@ class DB {
   Future init() async {
     if (!_initialized) {
       var databasePath = await getDatabasesPath();
-      var path = join(databasePath, "db_v1.0.2.db");
+      var path = join(databasePath, "db_v1.0.4.db");
 
       _db = await openDatabase(path, version: 1, onCreate: _createDB);
       _initialized = true;
@@ -43,7 +43,7 @@ class DB {
     if (type == DbModel) {
       throw Exception("Type is REQUIRED");
     }
-    return "t_$type";
+    return "t_" + (type).toString();
   }
 
   Future<Iterable<T>> getAll<T extends DbModel>(

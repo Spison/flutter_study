@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import '../../app_navigator.dart';
+import '../../../internal/config/app_config.dart';
 import '../../../domain/models/user.dart';
 import '../../../internal/config/shared_prefs.dart';
 import '../../../internal/dependencies/repository_module.dart';
