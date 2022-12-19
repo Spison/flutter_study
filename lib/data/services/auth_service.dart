@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_study/data/services/data_service.dart';
 import 'package:flutter_study/domain/repository/api_repository.dart';
 import 'package:flutter_study/internal/config/shared_prefs.dart';
 import 'package:flutter_study/internal/config/token_storage.dart';

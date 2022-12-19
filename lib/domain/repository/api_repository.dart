@@ -1,5 +1,4 @@
 import '../models/post_model.dart';
-import '../models/refresh_token_request.dart';
 import '../models/token_response.dart';
 import '../models/user.dart';
 

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_study/data/clients/api_client.dart';
 import 'package:provider/provider.dart';
 import '../../domain/models/user.dart';
 import '../../internal/config/app_config.dart';
 import '../../internal/config/shared_prefs.dart';
-import '../../internal/config/token_storage.dart';
-import '../app_navigator.dart';
 
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
@@ -48,11 +45,6 @@ class Profile extends StatelessWidget {
                         textAlign: TextAlign.left,
                         style: const TextStyle(fontSize: 20),
                       ),
-                      // Text(
-                      //   "Публикаций: ${(viewModel.user!.postsCount ?? "0")}",
-                      //   textAlign: TextAlign.left,
-                      //   style: const TextStyle(fontSize: 20),
-                      // ),
                     ]),
               ])
             : null,

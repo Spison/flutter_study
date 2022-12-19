@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_study/data/services/auth_service.dart';
 import 'package:flutter_study/data/services/data_service.dart';
-import 'package:flutter_study/data/services/sync_service.dart';
 import 'package:provider/provider.dart';
 import '../../domain/models/post_model.dart';
 import '../../domain/models/user.dart';

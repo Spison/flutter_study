@@ -43,7 +43,7 @@ class DB {
     if (type == DbModel) {
       throw Exception("Type is REQUIRED");
     }
-    return "t_" + (type).toString();
+    return "t_$type";
   }
 
   Future<Iterable<T>> getAll<T extends DbModel>(

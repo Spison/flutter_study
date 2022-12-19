@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter_study/internal/config/token_storage.dart';
 import '../../data/services/auth_service.dart';
 import '../../domain/models/refresh_token_request.dart';
-import '../../internal/config/token_storage.dart';
 import '../../ui/app_navigator.dart';
 import '../config/app_config.dart';
 import '../../data/clients/api_client.dart';
@@ -56,6 +55,7 @@ class ApiModule {
             return handler
                 .resolve(Response(statusCode: 400, requestOptions: options));
           } finally {
+            // ignore: deprecated_member_use
             dio.unlock();
           }
 
