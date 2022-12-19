@@ -66,31 +66,17 @@ class _ViewModel extends ChangeNotifier {
             .then((value) => {state = state.copyWith(isLoading: false)});
       });
     } on NoNetworkException {
-      state = state.copyWith(errorText: "Отсутствует интернет-соединение");
+      state = state.copyWith(errorText: "нет сети");
     } on WrongCredentionalException {
-      state = state.copyWith(errorText: "Не верный логин или пароль");
+      state = state.copyWith(errorText: "не правильный логин или пароль");
     } on ServerException {
-      state = state.copyWith(errorText: "Произошла ошибка на сервере");
+      state = state.copyWith(errorText: "произошла ошибка на сервере");
     }
   }
 }
 
 class Auth extends StatelessWidget {
   const Auth({Key? key}) : super(key: key);
-
-  _submittedPassField(String text) {
-    if (text == "") {
-      const SnackBar(
-        content: Text("Password can't be empty"),
-      );
-    }
-  }
-
-  _submittedLoginField(String text) {
-    if (text == "") {
-      return const SnackBar(content: Text("Login can't be empty"));
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,20 +92,13 @@ class Auth extends StatelessWidget {
               children: [
                 TextField(
                   controller: viewModel.loginTec,
-                  decoration: const InputDecoration(
-                      hintText: "Enter Login",
-                      helperText: "The Login is user to log in"),
-                  onSubmitted: _submittedLoginField,
+                  decoration: const InputDecoration(hintText: "Enter Login"),
                 ),
                 TextField(
-                  controller: viewModel.passwTec,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                      hintText: "Enter Password",
-                      helperText:
-                          "The Password is used to protect the account"),
-                  onSubmitted: _submittedPassField,
-                ),
+                    controller: viewModel.passwTec,
+                    obscureText: true,
+                    decoration:
+                        const InputDecoration(hintText: "Enter Password")),
                 ElevatedButton(
                     onPressed: viewModel.checkFields() ? viewModel.login : null,
                     child: const Text("Login")),

@@ -9,7 +9,7 @@ import 'package:flutter_study/internal/dependencies/repository_module.dart';
 
 class AuthService {
   final ApiRepository _api = RepositoryModule.apiRepository();
-  final DataService _dataService = DataService();
+  //final DataService _dataService = DataService();
 
   Future auth(String? login, String? password) async {
     if (login != null && password != null) {
@@ -38,11 +38,11 @@ class AuthService {
     var res = false;
 
     if (await TokenStorage.getAccessToken() != null) {
-      var user = await _api.getUser();
-      if (user != null) {
-        await SharedPrefs.setStoredUser(user);
-        await _dataService.cuUser(user);
-      }
+      // var user = await _api.getUser();
+      // if (user != null) {
+      //   await SharedPrefs.setStoredUser(user);
+      //   await _dataService.cuUser(user);
+      // }
 
       res = true;
     }

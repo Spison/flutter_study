@@ -22,7 +22,6 @@ class _ViewModel extends ChangeNotifier {
 
 class LoaderWidget extends StatelessWidget {
   const LoaderWidget({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
@@ -32,7 +31,7 @@ class LoaderWidget extends StatelessWidget {
 
   static Widget create() => ChangeNotifierProvider<_ViewModel>(
         create: (context) => _ViewModel(context: context),
-        child: const LoaderWidget(),
         lazy: false,
+        child: const LoaderWidget(),
       );
 }
