@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_study/data/clients/api_client.dart';
 import 'package:flutter_study/data/clients/auth_client.dart';
 import 'package:flutter_study/domain/models/token_response.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_study/domain/models/user.dart';
 import 'package:flutter_study/domain/repository/api_repository.dart';
 import 'package:flutter_study/domain/models/token_request.dart';
 
+import '../../domain/models/attach_meta.dart';
 import '../../domain/models/post_model.dart';
 import '../../domain/models/refresh_token_request.dart';
 
@@ -34,4 +37,10 @@ class ApiDataRepository extends ApiRepository {
   @override
   Future<List<PostModel>> getPosts(int skip, int take) =>
       _api.getPosts(skip, take);
+  @override
+  Future<List<AttachMeta>> uploadTemp({required List<File> files}) =>
+      _api.uploadTemp(files: files);
+
+  @override
+  Future addAvatarToUser(AttachMeta model) => _api.addAvatarToUser(model);
 }

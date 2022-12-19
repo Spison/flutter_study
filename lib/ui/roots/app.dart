@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_study/data/services/auth_service.dart';
 import 'package:flutter_study/data/services/data_service.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,7 @@ import '../../domain/models/user.dart';
 import '../../internal/config/app_config.dart';
 import '../../internal/config/shared_prefs.dart';
 import '../app_navigator.dart';
+import 'profile/profile.dart';
 
 class AppViewModel extends ChangeNotifier {
   BuildContext context;
@@ -68,12 +70,12 @@ class AppViewModel extends ChangeNotifier {
 
   void asyncInit() async {
     user = await SharedPrefs.getStoredUser();
-    // var img = await NetworkAssetBundle(Uri.parse("$baseUrl${user!.avatarLink}"))
-    //     .load("$baseUrl${user!.avatarLink}?v=1");
-    // avatar = Image.memory(
-    //   img.buffer.asUint8List(),
-    //   fit: BoxFit.fill,
-    // );
+    var img = await NetworkAssetBundle(Uri.parse("$baseUrl${user!.avatarLink}"))
+        .load("$baseUrl${user!.avatarLink}?v=1");
+    avatar = Image.memory(
+      img.buffer.asUint8List(),
+      fit: BoxFit.fill,
+    );
     posts = await _dataService.getPosts();
   }
 
@@ -87,8 +89,10 @@ class AppViewModel extends ChangeNotifier {
         duration: const Duration(seconds: 1), curve: Curves.easeInCubic);
   }
 
-  void _toProfile() async {
-    AppNavigator.toProfile();
+  void _toProfile(BuildContext bc) async {
+    // AppNavigator.toProfile(bc);
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (__) => Profile.create(bc)));
   }
 }
 
@@ -130,11 +134,7 @@ class App extends StatelessWidget {
                   viewModel.user == null ? "email" : viewModel.user!.email),
               currentAccountPicture: (viewModel.user != null)
                   ? CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        (viewModel.user!.avatarLink == null
-                            ? "https://it-events.com/system/ckeditor/pictures/9440/content_dd_logo_rus.jpg"
-                            : "$baseUrl${viewModel.user!.avatarLink}"),
-                      ),
+                      backgroundImage: viewModel.avatar?.image,
                     )
                   : null,
             ),
@@ -144,7 +144,7 @@ class App extends StatelessWidget {
                 // style: ElevatedButton.styleFrom(
                 //     primary: Colors.blue, onPrimary: Colors.white),
                 onPressed: () {
-                  viewModel._toProfile();
+                  viewModel._toProfile(context);
                 },
                 child: const Text("Profile"),
               ),
