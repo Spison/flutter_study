@@ -42,7 +42,11 @@ class Profile extends StatelessWidget {
                     GestureDetector(
                       onTap: () => {viewModel.changePhoto()},
                       child: const Text("Change photo"),
-                    )
+                    ),
+                    GestureDetector(
+                      onTap: () => {viewModel.createPost(viewModel.user!.id)},
+                      child: const Text("Create post"),
+                    ),
                   ],
                 ),
                 Column(

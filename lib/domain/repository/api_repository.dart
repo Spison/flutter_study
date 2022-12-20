@@ -19,4 +19,6 @@ abstract class ApiRepository {
       required String password,
       required String retryPassword,
       required DateTime birthDate});
+
+  Future createPost(PostModelCreate model);
 }

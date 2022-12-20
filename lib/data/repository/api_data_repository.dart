@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_study/data/clients/api_client.dart';
 import 'package:flutter_study/data/clients/auth_client.dart';
+import 'package:flutter_study/domain/models/post.dart';
 import 'package:flutter_study/domain/models/register_request.dart';
 import 'package:flutter_study/domain/models/token_response.dart';
 import 'package:flutter_study/domain/models/user.dart';
@@ -62,4 +63,7 @@ class ApiDataRepository extends ApiRepository {
 
   @override
   Future addAvatarToUser(AttachMeta model) => _api.addAvatarToUser(model);
+
+  @override
+  Future createPost(PostModelCreate model) => _api.createPost(model);
 }

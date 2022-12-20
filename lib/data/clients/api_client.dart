@@ -26,4 +26,7 @@ abstract class ApiClient {
 
   @POST("/api/User/AddAvatarToUser")
   Future addAvatarToUser(@Body() AttachMeta model);
+
+  @POST("/api/Post/CreatePost")
+  Future createPost(@Body() PostModelCreate model);
 }

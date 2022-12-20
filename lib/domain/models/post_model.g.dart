@@ -21,3 +21,19 @@ Map<String, dynamic> _$PostModelToJson(PostModel instance) => <String, dynamic>{
       'author': instance.author,
       'contents': instance.contents,
     };
+
+PostModelCreate _$PostModelCreateFromJson(Map<String, dynamic> json) =>
+    PostModelCreate(
+      description: json['description'] as String?,
+      visibleToSubscribersOnly: json['visibleToSubscribersOnly'] as bool,
+      contents: (json['contents'] as List<dynamic>)
+          .map((e) => AttachMeta.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$PostModelCreateToJson(PostModelCreate instance) =>
+    <String, dynamic>{
+      'description': instance.description,
+      'visibleToSubscribersOnly': instance.visibleToSubscribersOnly,
+      'contents': instance.contents,
+    };

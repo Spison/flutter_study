@@ -10,6 +10,7 @@ import '../../../internal/config/shared_prefs.dart';
 import '../../../internal/dependencies/repository_module.dart';
 import '../../common/cam_widget.dart';
 import '../app.dart';
+import '../create_post.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   final _api = RepositoryModule.apiRepository();
@@ -69,5 +70,10 @@ class ProfileViewModel extends ChangeNotifier {
         appmodel.avatar = avImage;
       }
     }
+  }
+
+  void createPost(String userId) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (__) => CreatePost.create(userId)));
   }
 }
