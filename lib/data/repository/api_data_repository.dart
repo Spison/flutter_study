@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_study/data/clients/api_client.dart';
 import 'package:flutter_study/data/clients/auth_client.dart';
+import 'package:flutter_study/domain/models/register_request.dart';
 import 'package:flutter_study/domain/models/token_response.dart';
 import 'package:flutter_study/domain/models/user.dart';
 import 'package:flutter_study/domain/repository/api_repository.dart';
@@ -25,6 +26,21 @@ class ApiDataRepository extends ApiRepository {
       login: login,
       pass: password,
     ));
+  }
+
+  @override
+  Future<String> registerUser(
+      {required String name,
+      required String email,
+      required String password,
+      required String retryPassword,
+      required DateTime birthDate}) async {
+    return await _auth.registerUser(RegisterRequest(
+        name: name,
+        email: email,
+        password: password,
+        retryPassword: retryPassword,
+        birthDate: birthDate));
   }
 
   @override

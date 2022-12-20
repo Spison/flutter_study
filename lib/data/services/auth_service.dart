@@ -33,6 +33,31 @@ class AuthService {
     }
   }
 
+  Future reg(String? name, String? email, String? password,
+      String? retryPassword, DateTime birthday) async {
+    if (name != null &&
+        email != null &&
+        password != null &&
+        retryPassword != null) {
+      try {
+        await _api.registerUser(
+            name: name,
+            email: email,
+            password: password,
+            retryPassword: retryPassword,
+            birthDate: birthday);
+      } on DioError catch (e) {
+        if (e.error is SocketException) {
+          throw NoNetworkException();
+        } else if (<int>[401].contains(e.response?.statusCode)) {
+          throw WrongCredentionalException();
+        } else if (<int>[500].contains(e.response?.statusCode)) {
+          throw ServerException();
+        }
+      }
+    }
+  }
+
   Future<bool> checkAuth() async {
     var res = false;
 

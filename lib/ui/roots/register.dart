@@ -1,30 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study/data/services/auth_service.dart';
+import 'package:flutter_study/main.dart';
 import 'package:flutter_study/ui/app_navigator.dart';
-import 'package:flutter_study/ui/roots/register.dart';
 import 'package:provider/provider.dart';
 
 class _ViewModelState {
   final String? login;
+  final String? email;
   final String? password;
+  final String? passwordRetry;
+  final DateTime? birthDate;
+
   final bool isLoading;
   final String? errorText;
+
   const _ViewModelState({
     this.login,
+    this.email,
     this.password,
+    this.passwordRetry,
+    this.birthDate,
     this.isLoading = false,
     this.errorText,
   });
 
   _ViewModelState copyWith({
     String? login,
+    String? email,
     String? password,
+    String? passwordRetry,
+    DateTime? birthDate,
     bool? isLoading = false,
     String? errorText,
   }) {
     return _ViewModelState(
       login: login ?? this.login,
+      email: email ?? this.email,
       password: password ?? this.password,
+      passwordRetry: passwordRetry ?? this.passwordRetry,
+      birthDate: birthDate ?? this.birthDate,
       isLoading: isLoading ?? this.isLoading,
       errorText: errorText ?? this.errorText,
     );
@@ -33,7 +47,10 @@ class _ViewModelState {
 
 class _ViewModel extends ChangeNotifier {
   var loginTec = TextEditingController();
+  var emailTec = TextEditingController();
   var passwTec = TextEditingController();
+  var passwRetryTec = TextEditingController();
+  late DateTime? birthDayTec;
   final _authService = AuthService();
 
   BuildContext context;
@@ -41,8 +58,14 @@ class _ViewModel extends ChangeNotifier {
     loginTec.addListener(() {
       state = state.copyWith(login: loginTec.text);
     });
+    emailTec.addListener(() {
+      state = state.copyWith(email: emailTec.text);
+    });
     passwTec.addListener(() {
       state = state.copyWith(password: passwTec.text);
+    });
+    passwRetryTec.addListener(() {
+      state = state.copyWith(passwordRetry: passwRetryTec.text);
     });
   }
 
@@ -56,19 +79,19 @@ class _ViewModel extends ChangeNotifier {
 
   bool checkFields() {
     return (state.login?.isNotEmpty ?? false) &&
-        (state.password?.isNotEmpty ?? false);
+        (state.email?.isNotEmpty ?? false) &&
+        (state.password?.isNotEmpty ?? false) &&
+        (state.passwordRetry?.isNotEmpty ?? false);
   }
 
-  void toRegister() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (__) => Register.create()));
-  }
-
-  void login() async {
+  void registration() async {
     state = state.copyWith(isLoading: true);
 
     try {
-      await _authService.auth(state.login, state.password).then((value) {
+      await _authService
+          .reg(state.login, state.email, state.password, state.passwordRetry,
+              birthDayTec!)
+          .then((value) {
         AppNavigator.toLoader()
             .then((value) => {state = state.copyWith(isLoading: false)});
       });
@@ -82,8 +105,8 @@ class _ViewModel extends ChangeNotifier {
   }
 }
 
-class Auth extends StatelessWidget {
-  const Auth({Key? key}) : super(key: key);
+class Register extends StatelessWidget {
+  const Register({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -102,24 +125,37 @@ class Auth extends StatelessWidget {
                   decoration: const InputDecoration(hintText: "Enter Login"),
                 ),
                 TextField(
-                    controller: viewModel.passwTec,
-                    obscureText: true,
-                    decoration:
-                        const InputDecoration(hintText: "Enter Password")),
+                  controller: viewModel.emailTec,
+                  decoration: const InputDecoration(hintText: "Enter Email"),
+                ),
+                TextField(
+                  controller: viewModel.passwTec,
+                  decoration: const InputDecoration(hintText: "Enter Password"),
+                ),
+                TextField(
+                  controller: viewModel.passwRetryTec,
+                  decoration: const InputDecoration(hintText: "Retry Password"),
+                ),
                 ElevatedButton(
-                    onPressed: viewModel.checkFields() ? viewModel.login : null,
-                    child: const Text("Login")),
-                if (viewModel.state.isLoading)
-                  const CircularProgressIndicator(),
+                    onPressed: () {
+                      showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(1940),
+                        lastDate: DateTime.now(),
+                      ).then((date) {
+                        viewModel.birthDayTec = date!;
+                      });
+                    },
+                    child: const Text("Select your date of birth")),
+                ElevatedButton(
+                    onPressed: () {
+                      viewModel.checkFields() ? viewModel.registration() : null;
+                    },
+                    child: const Text(
+                        "Register")), //добавить проверку на ввод всех полей
                 if (viewModel.state.errorText != null)
                   Text(viewModel.state.errorText!),
-                GestureDetector(
-                  onTap: () => viewModel.toRegister(),
-                  child: const Text(
-                    "Register Now",
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                )
               ],
             ),
           ),
@@ -130,6 +166,6 @@ class Auth extends StatelessWidget {
 
   static Widget create() => ChangeNotifierProvider<_ViewModel>(
         create: (context) => _ViewModel(context: context),
-        child: const Auth(),
+        child: const Register(),
       );
 }
